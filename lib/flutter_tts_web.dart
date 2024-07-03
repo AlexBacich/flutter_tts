@@ -1,6 +1,5 @@
 import 'dart:async';
-import 'dart:collection';
-import 'dart:js' as js;
+import 'dart:js_interop' as js;
 
 import 'package:flutter/services.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
@@ -14,7 +13,8 @@ class FlutterTtsPlugin {
 
   TtsState ttsState = TtsState.stopped;
 
-  Completer<dynamic>? _speechCompleter;
+  // Completer<dynamic>? _speechCompleter;
+  js.JSAny get any => throw Exception('This is dummy one');
 
   bool get isPlaying => ttsState == TtsState.playing;
 
@@ -31,8 +31,8 @@ class FlutterTtsPlugin {
     channel.setMethodCallHandler(instance.handleMethodCall);
   }
 
-  late js.JsObject synth;
-  late js.JsObject utterance;
+  // late js.JsObject synth;
+  // late js.JsObject utterance;
   List<dynamic>? voices;
   List<String?>? languages;
   Timer? t;
@@ -40,18 +40,18 @@ class FlutterTtsPlugin {
 
   FlutterTtsPlugin() {
     try {
-      utterance = js.JsObject(
+      /*utterance = js.JsObject(
           js.context["SpeechSynthesisUtterance"] as js.JsFunction, [""]);
       synth = js.JsObject.fromBrowserObject(
           js.context["speechSynthesis"] as js.JsObject);
-      _listeners();
+      _listeners();*/
       supported = true;
     } catch (e) {
       print('Initialization of TTS failed. Functions are disabled. Error: $e');
     }
   }
 
-  void _listeners() {
+  /*void _listeners() {
     utterance["onstart"] = (e) {
       ttsState = TtsState.playing;
       channel.invokeMethod("speak.onStart", null);
@@ -101,11 +101,11 @@ class FlutterTtsPlugin {
       print(event); // Log the entire event object to get more details
       channel.invokeMethod("speak.onError", event["error"]);
     };
-  }
+  }*/
 
   Future<dynamic> handleMethodCall(MethodCall call) async {
     if (!supported) return;
-    switch (call.method) {
+    /*switch (call.method) {
       case 'speak':
         final text = call.arguments as String?;
         if (awaitSpeakCompletion) {
@@ -157,10 +157,10 @@ class FlutterTtsPlugin {
             code: 'Unimplemented',
             details: "The flutter_tts plugin for web doesn't implement "
                 "the method '${call.method}'");
-    }
+    }*/
   }
 
-  void _speak(String? text) {
+  /*void _speak(String? text) {
     if (ttsState == TtsState.stopped || ttsState == TtsState.paused) {
       utterance['text'] = text;
       if (ttsState == TtsState.paused) {
@@ -238,5 +238,5 @@ class FlutterTtsPlugin {
     }
 
     languages = langs.toList();
-  }
+  }*/
 }
